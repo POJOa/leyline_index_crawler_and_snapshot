@@ -49,6 +49,7 @@ def process(url):
         print(url + " - " + str(e))
     finally:
         entity = {
+            "url": url,
             "thumb":thumb,
             "images":[],
             "title":title,
@@ -86,22 +87,11 @@ def tsk(line):
 
 def main():
     for line in open("dict.txt"):
+        if(line.__len__()<4):
+            continue
         p.apply_async(tsk,args=(line,))
     p.close()
     p.join()
 
 if __name__=='__main__':
     main()
-
-'''
-qualified = checkQualified("http://src.moe")
-
-if qualified is None:
-    url = "http://www.src.moe"
-    qualified = checkQualified(url)
-
-if qualified is True:
-    process("http://src.moe")
-
-browser.close()
-'''
