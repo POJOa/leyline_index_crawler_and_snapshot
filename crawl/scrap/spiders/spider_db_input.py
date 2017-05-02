@@ -59,10 +59,10 @@ class scrap(Spider):
 
 
     'reachableAndInChinese'
-    def check_reachable_and_in_chinese(self,url):
+    def check_reachable_and_in_chinese(self,url,wait):
         zhPattern = re.compile(u"[\u4e00-\u9fa5]+")
         try:
-            r = requests.get(url, timeout=2)
+            r = requests.get(url, timeout=wait)
             r.encoding = "utf-8"
             content = r.text
             return zhPattern.search(content) is not None
@@ -78,16 +78,22 @@ class scrap(Spider):
             print(url + "is illegal")
             return None
 
-        qualified = self.check_reachable_and_in_chinese(url)
-        print("trying " + url)
+        'qualified = self.check_reachable_and_in_chinese(url)'
+        'print("trying " + url)'
+        qualified = None
         if qualified is None:
-            url = "http://www." + get_tld(url)
-            qualified = self.check_reachable_and_in_chinese(url)
+            url = "http://" + get_tld(url)
+            qualified = self.check_reachable_and_in_chinese(url , 3)
             print("trying " + url)
 
         if qualified is None:
-            url = "http://" + get_tld(url)
-            qualified = self.check_reachable_and_in_chinese(url)
+            url = "http://www." + get_tld(url)
+            qualified = self.check_reachable_and_in_chinese(url , 1)
+            print("trying " + url)
+
+        if qualified is None:
+            url = "http://blog." + get_tld(url)
+            qualified = self.check_reachable_and_in_chinese(url , 1)
             print("trying " + url)
 
         if qualified is True:
@@ -227,11 +233,15 @@ class scrap(Spider):
             return
         for url in new_urls:
             url_txt = url.xpath('@href').extract_first()
-            'first page or none'
-            if url_txt is None or len(url_txt.split('/'))<2:
-                print(url_txt + ' is homepage or empty')
 
+
+            if url_txt is None:
                 continue
+
+            if len(url_txt.split('/'))<2:
+                print(url_txt + ' is homepage or empty')
+                continue
+
             else:
                 if not self.check_banned_domain(url_txt,url_txt):
                     print(url_txt + 'is banned')
