@@ -1,0 +1,16 @@
+edu
+jpg
+png
+gif
+sinapp
+github
+mp3
+.jp
+gov
+theme
+blogspot
+org
+sitemap
+disqus
+duoshuo
+wordpress
