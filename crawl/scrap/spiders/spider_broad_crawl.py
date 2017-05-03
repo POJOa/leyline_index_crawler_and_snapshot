@@ -8,7 +8,7 @@ from scrapy import Selector
 from scrapy.item import Item, Field
 from tld import get_tld
 from pymongo import MongoClient
-
+import simplejson as json
 
 class scrap(Spider):
     name = 'src_spider_pojo'
@@ -26,6 +26,7 @@ class scrap(Spider):
         self.bannedList = []
         self.banned_url_keywords = []
 
+
         for line in open("./bannedList.txt"):
             self.bannedList.append(line.replace('\n',''))
 
@@ -37,11 +38,17 @@ class scrap(Spider):
 
         self.maximumPagesPerSite = 20  # maximum pages each site
 
-        self.start_urls = ['http://touko.moe']
+        self.start_urls = []
         self.allowed_domains = []
+
+        for line in json.load(open("res4.json")):
+            self.start_urls.append(line['link'])
+            self.allowed_domains.append(get_tld(line['link']))
+
+        '''
         for dom in self.start_urls:
             self.allowed_domains.append(get_tld(dom))
-
+        '''
         '''
         client = MongoClient('mongodb://localhost:27017/')
         db = client.src_index
@@ -148,7 +155,7 @@ class scrap(Spider):
 
 
     def check_if_reachable(self,url,pattern):
-        anti_fake_200 = ['404','gandi','error','找不到','页面不','删除']
+        anti_fake_200 = ['404','gandi','error','找不到','页面不','删除','Parking','这个域名已被暂停','无法找到该页','dragonstatic']
 
         try:
             print('trying ' + pattern +' as first contact url for ' + url)
@@ -201,7 +208,7 @@ class scrap(Spider):
 
     def parse(self, response):
         domain = get_tld(response.url)
-        if len(response.url.replace("http://","").split('/')) > 4:
+        if len(response.url.replace("http://","").replace("https://","").split('/')) > 4:
             return
         if domain in self.first_kiss_domains:
             if self.first_kiss_domains[domain] != response.url and self.first_kiss_domains[domain] != -1:
@@ -244,7 +251,7 @@ class scrap(Spider):
                 print(valid_url + ' seems yummy')
                 if domain in self.crawled_pages and self.crawled_pages[domain] > 1:
                     self.crawled_pages[domain]-=1
-                self.res.append(get_tld(url_txt))
+                self.res.append(get_tld(valid_url))
 
                 item = self.Site()
                 item['text'] = url.xpath('text()').extract_first()
@@ -258,7 +265,7 @@ class scrap(Spider):
 
                         self.crawled_pages[domain] = 1
                         print(domain + ' has been visited for THE FIRST TIME')
-                        first_kiss_url = self.first_kiss(domain, url_txt)
+                        first_kiss_url = self.first_kiss(domain, response.urljoin(url_txt))
                         if first_kiss_url is not None:
                             yield scrapy.Request(first_kiss_url, callback=self.parse)
                             break

@@ -50,7 +50,7 @@ def process(line):
 
     browser = webdriver.Chrome("./chromedriver")
     browser.set_window_size(1280, 1024)
-    browser.set_page_load_timeout(20)
+    'browser.set_page_load_timeout(20)'
     try:
         browser.get(url)
     except Exception as e:
@@ -142,7 +142,7 @@ def process(line):
 
 # noinspection PyArgumentList
 def main():
-    p = Pool(5)
+    p = Pool(8)
     with open("res9.json", encoding='utf-8') as data_file:
         arr = json.load(data_file)
     for line in arr:

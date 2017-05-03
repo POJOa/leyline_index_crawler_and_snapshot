@@ -8,14 +8,15 @@ mp3
 gov
 theme
 blogspot
-org
 sitemap
 disqus
+swift.org
 duoshuo
 wordpress
 .exe
 .zip
 .dmg
+freebuf.com
 sinaapp
 cdn
 .html
