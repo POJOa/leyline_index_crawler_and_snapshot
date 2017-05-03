@@ -1,5 +1,6 @@
 ubuntu.com
 lnmp.org
+coding.net
 debian.org
 renren.com
 godaddy.com
@@ -17,12 +18,19 @@ debian.org
 360.cn
 yunpan.cn
 douban.com
+gitcafe.com
+ktxp.com
+steamcommunity.com
+cnbeta.com
+acfun.cn
 taobao.com
 bgm.tv
 bangumi.tv
 alipay.com
 upyun.com
 google.com
+hostker.com
+zhujike.com
 qq.com
 hexo.io
 github.io

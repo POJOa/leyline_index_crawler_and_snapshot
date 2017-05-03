@@ -2,7 +2,6 @@ edu
 jpg
 png
 gif
-sinapp
 github
 mp3
 .jp
@@ -17,3 +16,9 @@ wordpress
 .exe
 .zip
 .dmg
+sinaapp
+cdn
+.html
+w3school
+host
+buy
