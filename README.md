@@ -1,4 +1,4 @@
-# moe_snapper_py
+# leyline_index_crawler_and_snapshot
 A project to crawl and snapshot personal weblogs , especially the moe ones , in order to ... 
 Well I can't continue the nonsense 
 
