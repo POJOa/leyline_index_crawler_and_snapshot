@@ -129,6 +129,7 @@ def process(line):
             "author": author,
             "keywords": keywords
         },
+        "groups":["个站"],
         "createdAt":datetime.datetime.utcnow(),
         "raw":{
             "text":line["text"],

@@ -21,7 +21,7 @@ USER_AGENT = 'scraper (+https://src.moe)'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 FEED_EXPORT_ENCODING='utf-8'
-DEPTH_LIMIT=1
+DEPTH_LIMIT=0
 RETRY_ENABLED = False
 
 CONCURRENT_REQUESTS = 100

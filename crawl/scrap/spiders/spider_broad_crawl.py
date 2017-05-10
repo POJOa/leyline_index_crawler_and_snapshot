@@ -41,7 +41,7 @@ class scrap(Spider):
         self.start_urls = []
         self.allowed_domains = []
 
-        for line in json.load(open("res4.json")):
+        for line in json.load(open("res9.json")):
             self.start_urls.append(line['link'])
             self.allowed_domains.append(get_tld(line['link']))
 
