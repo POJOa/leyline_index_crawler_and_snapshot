@@ -1,4 +1,6 @@
 # LeylineIndex Project    
+![img](http://wx4.sinaimg.cn/large/005yrqtrgy1ffbqm6yk56j31kw0nq0ve.jpg)
+ 
 ## Purpose
 To get familiar with several currently coolest field in I.T. , in order to make a "cityescape" from Web Development.    
 ## Naming
