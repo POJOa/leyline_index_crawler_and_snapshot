@@ -109,8 +109,8 @@ class scrap(Spider):
                    '2015' not in response.url and
                    '2016' not in response.url and
                    'fossil' not in response.url and
-
-                    '2017' not in response.url
+                   'comment' not in response.url and
+                   '2017' not in response.url
 
            ):
             item = self.Detail()
@@ -129,8 +129,8 @@ class scrap(Spider):
                    'gif' not in response.url and
                    'png' not in response.url and
                    'fossil' not in response.url and
-
-                   'dmg' not in response.url):
+                    'comment' not in response.url and
+                    'dmg' not in response.url):
 
 
 
