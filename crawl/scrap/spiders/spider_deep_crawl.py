@@ -54,16 +54,43 @@ class scrap(Spider):
         collection = db.NewSites
 
 
-        for e in collection.find({"groups":"个站","$or":[{"url":{"$regex":".me"}},{"url":{"$regex":".im"}},{"url":{"$regex":".cc"}},{"url":{"$regex":".io"}}]}):
-            self.start_urls.append(e['url'])
-            self.allowed_domains.append(get_tld(e['url']))
+        existed = []
+        for line in json.load(open("deep_io_me_cc_im.json")):
+            if get_tld(line['link']) not in existed:
+                existed.append(get_tld(line['link']))
 
+        for e in collection.find({"groups":"个站","$or":[{"url":{"$regex":"\\.me"}},{"url":{"$regex":"\\.im"}},{"url":{"$regex":"\\.cc"}},{"url":{"$regex":"\\.io"}}]}):
+            dom = get_tld(e['url'])
+            if(dom not in existed):
+                print(dom)
+                self.start_urls.append(e['url'])
+                self.allowed_domains.append(get_tld(e['url']))
 
-
-
+        '''
+        self.start_urls.append('http://touko.moe/')
+        self.allowed_domains.append('touko.moe')
+        '''
+        print(len(self.start_urls))
 
     def parse(self, response):
-
+        if('image'  in response.url or
+                'git'  in response.url or
+                'login'  in response.url or
+                'admin'  in response.url or
+                'reg'  in response.url  or
+                'jpg'  in response.url or
+                'ons.me' in response.url or
+                'code.atr.me' in response.url or
+                'thoj' in response.url or
+               'gif'  in response.url or
+                'png'  in response.url or
+                'fossil'  in response.url or
+                'comment'  in response.url or
+                'shop'  in response.url or
+                'mall'  in response.url or
+                'reply'  in response.url or
+                'dmg'  in response.url):
+            return
         hxs = Selector(response)
         expected_headline = hxs.xpath("//*[contains(@class, 'title')]//text()").extract_first()
         if expected_headline is None:
@@ -102,6 +129,11 @@ class scrap(Spider):
                    'admin' not in response.url and
                    'reg' not in response.url and
                    'page' not in response.url and
+                   '2006' not in response.url and
+                   '2007' not in response.url and
+                   '2008' not in response.url and
+                   '2009' not in response.url and
+                   '2010' not in response.url and
                    '2011' not in response.url and
                    '2012' not in response.url and
                    '2013' not in response.url and
@@ -120,26 +152,24 @@ class scrap(Spider):
             item['keywords'] = expected_keywords
             print(response.url)
             yield item
-        if     ('image' not in response.url and
-                   'git' not in response.url and
-                   'login' not in response.url and
-                   'admin' not in response.url and
-                   'reg' not in response.url  and
-                   'jpg' not in response.url and
-                   'gif' not in response.url and
-                   'png' not in response.url and
-                   'fossil' not in response.url and
-                    'comment' not in response.url and
-                    'dmg' not in response.url):
 
-
-
-
-
-
-            new_urls = hxs.xpath('//a')
-            for url in new_urls:
-                url_txt = url.xpath('@href').extract_first()
-                if url_txt is not None:
-                    yield scrapy.Request(response.urljoin(url_txt), callback=self.parse)
+        new_urls = hxs.xpath('//a')
+        for url in new_urls:
+            url_txt = url.xpath('@href').extract_first()
+            if (url_txt is not None and
+               'image' not in url_txt and
+                            'git' not in url_txt and
+                            'login' not in url_txt and
+                            'admin' not in url_txt and
+                            'reg' not in url_txt and
+                            'jpg' not in url_txt and
+                            'gif' not in url_txt and
+                            'png' not in url_txt and
+                            'fossil' not in url_txt and
+                            'comment' not in url_txt and
+                            'shop' not in url_txt and
+                            'mall' not in url_txt and
+                            'reply' not in url_txt and
+                            'dmg' not in url_txt):
+                yield scrapy.Request(response.urljoin(url_txt), callback=self.parse)
 
